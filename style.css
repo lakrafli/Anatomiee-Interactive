@@ -1,0 +1,463 @@
+/* === VARIABLES === */
+:root {
+  --fond:       #080c14;
+  --panneau:    #0e1520;
+  --panneau2:   #141e2e;
+  --bordure:    rgba(180, 210, 255, 0.08);
+  --accent:     #4fc3f7;
+  --chaud:      #ffb74d;
+  --texte:      #dce6f5;
+  --discret:    #6b82a0;
+  --arrondi:    18px;
+}
+
+/* === RESET === */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background-color: var(--fond);
+  color: var(--texte);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* === HEADER === */
+header { text-align: center; padding: 50px 24px 28px; }
+/*  "Exploration Médicale · Système Digestife" */
+header .tag {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(247, 110, 79, 0.3);
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-bottom: 18px;
+  background: rgba(79, 195, 247, 0.05);
+}
+/* Titre Anatomie Interactive */
+header h1 {
+  font-family: 'Crimson Pro', serif;
+  font-size: clamp(32px, 6vw, 62px);
+  font-weight: 300;
+  color: white;
+  letter-spacing: -1px;
+}
+/* Interactive en jaune  */
+header h1 em { font-style: italic; color: var(--chaud); }
+
+header .sous-titre { margin-top: 14px; color: var(--discret); font-size: 14px; }
+
+.ligne-header {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  margin: 22px auto 0;
+}
+
+/* === MISE EN PAGE 2 COLONNES === */
+.grille-principale {
+  display: grid;
+  grid-template-columns: 1fr 570px;
+  gap: 28px;
+  max-width: 1340px;
+  margin: 28px auto 80px;
+  padding: 0 24px;
+}
+
+@media (max-width: 1000px) {
+  .grille-principale { grid-template-columns: 1fr; }
+}
+
+/* === PANNEAU CORPS (GAUCHE) === */
+.panneau-corps {
+  background: var(--panneau);
+  border: 1px solid var(--bordure);
+  border-radius: var(--arrondi);
+  min-height: 680px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+/* "// Corps humain Système digestif */
+.etiquette-panneau {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--discret);
+  padding: 18px 24px 0;
+  align-self: flex-start;
+}
+
+/* === PHOTO DU CORPS + PINS === */
+.conteneur-corps {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  margin: 16px auto 24px;
+}
+/* La photo du corps */
+.photo-corps {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+  opacity: 0.55;
+}
+/* ── Les points   sur le corps ── */
+.pin-organe {
+  position: absolute;
+  cursor: pointer;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+}
+
+.pin-organe .pin-cercle {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.pin-organe .pin-point {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+/*clignotage du pin */
+.pin-organe::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid;
+  animation: pulsation 1s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulsation {
+  0%   { width: 34px; height: 34px; opacity: 0.6; }
+  100% { width: 58px; height: 58px; opacity: 0; }
+}
+/* pour Quand on survole ou qu'un pin est actif  */
+.pin-organe:hover .pin-cercle,
+.pin-organe.actif  .pin-cercle {
+  transform: scale(1.4);
+  border-color: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.12);
+}
+
+.pin-organe .pin-etiquette {
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(8, 12, 20, 0.9);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--texte);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  white-space: nowrap;
+  padding: 4px 9px;
+  border-radius: 6px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+/* L'étiquette devient visible au survol ou quand actif */
+.pin-organe:hover .pin-etiquette,
+.pin-organe.actif  .pin-etiquette { opacity: 1; }
+
+/* === BOUTONS SÉLECTION RAPIDE === */
+.selection-rapide { width: 100%; padding: 0 20px 20px; }
+
+.selection-rapide h4 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--discret);
+  margin-bottom: 12px;
+}
+/* Grille 3 colonnes pour les boutons */
+.grille-boutons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.btn-rapide {
+  background: rgba(220, 230, 245, 0.04);
+  border: 1px solid var(--bordure);
+  border-radius: 10px;
+  padding: 9px 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--discret);
+  font-size: 11.5px;
+  font-family: 'Outfit', sans-serif;
+  text-align: left;
+}
+/* Le petit point de couleur dans le bouton */
+.btn-rapide .point-couleur {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.btn-rapide:hover,
+.btn-rapide.actif {
+  background: rgba(79, 195, 247, 0.07);
+  border-color: rgba(79, 195, 247, 0.3);
+  color: var(--accent);
+}
+
+.btn-rapide.actif { border-color: var(--accent); }
+
+/* === COLONNE INFO  === */
+.colonne-info {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: sticky;/* reste visible quand on scroll la page */
+  top: 24px;
+}
+/* Quand le JS ajoute la classe "cache", on le masque */
+.message-accueil.cache { display: none; }
+
+/* === CARTE ORGANE === */
+.carte-organe {
+  background: var(--panneau);
+  border: 1px solid var(--bordure);
+  border-radius: var(--arrondi);
+  overflow: hidden;
+  display: none;
+}
+
+.carte-organe.visible { display: block; }
+/* ── Zone image en haut de la carte ── */
+.zone-image {
+  position: relative;
+  height: 289px;
+  background: #050810;
+  overflow: hidden;
+}/* La photo de l'organe */
+
+.zone-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.badge-gauche,
+.badge-droite {
+  position: absolute;
+  top: 14px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 5px 11px;
+  border-radius: 100px;
+  backdrop-filter: blur(10px);
+}
+
+.badge-gauche {
+  left: 14px;
+  background: rgba(5, 8, 16, 0.75);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--discret);
+}
+
+.badge-droite {
+  right: 14px;
+  background: rgba(79, 195, 247, 0.1);
+  border: 1px solid rgba(63, 112, 135, 0.3);
+  color: var(--accent);
+}
+
+.corps-carte { padding: 24px 24px 28px; }
+
+.corps-carte h2 {
+  font-family: 'Crimson Pro', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: white;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.nom-latin {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--chaud);
+  margin-bottom: 18px;
+  opacity: 0.8;
+}
+
+.titre-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 20px 0 10px;
+}
+/* Titres de section (Description, Données clés,Fonctions principales ET Pathologies associées.) */
+.titre-section::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--bordure);
+}
+
+.texte-description { font-size: 13.5px; color: #8a9fc0; line-height: 1.75; }
+
+.grille-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.boite-stat {
+  background: var(--panneau2);
+  border: 1px solid var(--bordure);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.stat-valeur {
+  font-family: 'Crimson Pro', serif;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.stat-label { font-size: 11px; color: var(--discret); margin-top: 4px; font-weight: 300; }
+
+.liste-fonctions { list-style: none; }
+
+.liste-fonctions li {
+  font-size: 13px;
+  color: #8a9fc0;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--bordure);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.5;
+}
+
+.liste-fonctions li:last-child { border-bottom: none; }
+
+.liste-fonctions li::before {
+  content: '↳';
+  color: var(--chaud);
+  flex-shrink: 0;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.groupe-patho { display: flex; flex-wrap: wrap; gap: 7px; }
+
+.pastille-patho {
+  background: rgba(239, 83, 80, 0.07);
+  border: 1px solid rgba(239, 83, 80, 0.2);
+  color: #ef9a9a;
+  font-size: 11px;
+  padding: 5px 12px;
+  border-radius: 100px;
+}
+
+/* === TOOLTIP === */
+#tooltip {
+  position: fixed;
+  display: none;
+  background: rgba(8, 12, 20, 0.92);
+  border: 1px solid rgba(79, 195, 247, 0.35);
+  color: var(--accent);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  padding: 6px 13px;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 9000;
+  white-space: nowrap;
+}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--fond); }
+::-webkit-scrollbar-thumb { background: rgba(79,195,247,0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(79,195,247,0.4); }
+
+
+
+
+
+
+
+    /* ── Barre utilisateur AUTHntification ── */
+    .barre-user {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 14px;
+      padding: 14px 28px;
+      border-bottom: 1px solid rgba(180,210,255,0.06);
+      background: rgba(8,12,20,0.6);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .barre-user .user-info {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--discret);
+      letter-spacing: 1px;
+    }
+    .barre-user .user-info span {
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .barre-user .btn-logout {
+      background: rgba(239,83,80,0.07);
+      border: 1px solid rgba(239,83,80,0.2);
+      color: #ef9a9a;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 7px 16px;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .barre-user .btn-logout:hover {
+      background: rgba(239,83,80,0.14);
+      border-color: rgba(239,83,80,0.45);
+    }

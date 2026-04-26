@@ -1,0 +1,229 @@
+    :root {
+      --fond:     #080c14;
+      --panneau:  #0e1520;
+      --panneau2: #141e2e;
+      --bordure:  rgba(180, 210, 255, 0.08);
+      --accent:   #4fc3f7;
+      --chaud:    #ffb74d;
+      --texte:    #dce6f5;
+      --discret:  #6b82a0;
+      --rouge:    #ef9a9a;
+      --arrondi:  18px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--fond);
+      color: var(--texte);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ── Fond animé avec points ── */
+    .bg-dots {
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(79,195,247,0.06) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(79,195,247,0.05) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Carte centrale ── */
+    .carte-auth {
+      position: relative;
+      z-index: 1;
+      background: var(--panneau);
+      border: 1px solid var(--bordure);
+      border-radius: var(--arrondi);
+      width: 100%;
+      max-width: 440px;
+      padding: 44px 40px 40px;
+      margin: 24px;
+    }
+
+    /* ── Logo / titre ── */
+    .logo-top {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .logo-top .tag {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(79,195,247,0.25);
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+      background: rgba(79,195,247,0.05);
+    }
+
+    .logo-top h1 {
+      font-family: 'Crimson Pro', serif;
+      font-size: 34px;
+      font-weight: 300;
+      color: white;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-top h1 em {
+      font-style: italic;
+      color: var(--chaud);
+    }
+
+    .logo-top p {
+      margin-top: 8px;
+      color: var(--discret);
+      font-size: 13px;
+    }
+
+    /* ── Onglets Connexion / Inscription ── */
+    .onglets {
+      display: flex;
+      background: var(--panneau2);
+      border: 1px solid var(--bordure);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 28px;
+    }
+
+    .onglet-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--discret);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 10px;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .onglet-btn.actif {
+      background: rgba(79,195,247,0.1);
+      border: 1px solid rgba(79,195,247,0.3);
+      color: var(--accent);
+    }
+
+    /* ── Formulaires ── */
+    .form-section { display: none; }
+    .form-section.visible { display: block; }
+
+    .champ {
+      margin-bottom: 16px;
+    }
+
+    .champ label {
+      display: block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--discret);
+      margin-bottom: 8px;
+    }
+
+    .champ input {
+      width: 100%;
+      background: var(--panneau2);
+      border: 1px solid var(--bordure);
+      border-radius: 10px;
+      padding: 13px 16px;
+      color: var(--texte);
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .champ input::placeholder { color: rgba(107,130,160,0.5); }
+
+    .champ input:focus {
+      border-color: rgba(79,195,247,0.4);
+      box-shadow: 0 0 0 3px rgba(79,195,247,0.06);
+    }
+
+    /* ── Message d'erreur / succès ── */
+    .message-retour {
+      display: none;
+      font-size: 12.5px;
+      padding: 10px 14px;
+      border-radius: 9px;
+      margin-bottom: 16px;
+      font-family: 'IBM Plex Mono', monospace;
+      letter-spacing: 0.5px;
+    }
+
+    .message-retour.erreur {
+      display: block;
+      background: rgba(239,83,80,0.07);
+      border: 1px solid rgba(239,83,80,0.2);
+      color: var(--rouge);
+    }
+
+    /* ── Bouton principal ── */
+    .btn-principal {
+      width: 100%;
+      background: linear-gradient(135deg, rgba(79,195,247,0.15), rgba(79,195,247,0.08));
+      border: 1px solid rgba(79,195,247,0.4);
+      border-radius: 12px;
+      padding: 14px;
+      color: var(--accent);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      margin-top: 4px;
+    }
+
+    .btn-principal:hover {
+      background: linear-gradient(135deg, rgba(79,195,247,0.22), rgba(79,195,247,0.12));
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(79,195,247,0.12);
+      transform: translateY(-1px);
+    }
+
+    .btn-principal:active { transform: translateY(0); }
+
+    /* ── Séparateur bas ── */
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      margin: 28px auto 0;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--fond); }
+    ::-webkit-scrollbar-thumb { background: rgba(79,195,247,0.2); border-radius: 3px; }

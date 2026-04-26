@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anatomie Interactive — Connexion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="login.css"/>
+
+</head>
+<body>
+
+  <div class="bg-dots"></div>
+  <div class="bg-glow"></div>
+
+  <div class="carte-auth">
+
+    <div class="logo-top">
+      <div class="tag">Exploration Médicale · Système Digestif</div>
+      <h1>Anatomie <em>Interactive</em></h1>
+      <p>Connectez-vous pour explorer le corps humain</p>
+    </div>
+
+    <!-- Onglets -->
+    <div class="onglets">
+      <button class="onglet-btn actif" id="btn-connexion" onclick="afficherOnglet('connexion')">Connexion</button>
+      <button class="onglet-btn" id="btn-inscription" onclick="afficherOnglet('inscription')">Inscription</button>
+    </div>
+
+    <!-- ── Formulaire Connexion ── -->
+    <div class="form-section visible" id="form-connexion">
+      <div class="message-retour" id="err-connexion"></div>
+      <div class="champ">
+        <label>E-mail</label>
+        <input type="email" id="login-email" placeholder="votre@email.com" autocomplete="email"/>
+      </div>
+      <div class="champ">
+        <label>Mot de passe</label>
+        <input type="password" id="login-mdp" placeholder="••••••••" autocomplete="current-password"/>
+      </div>
+      <button class="btn-principal" onclick="handleConnexion()">→ Se connecter</button>
+    </div>
+
+    <!-- ── Formulaire Inscription ── -->
+    <div class="form-section" id="form-inscription">
+      <div class="message-retour" id="err-inscription"></div>
+      <div class="champ">
+        <label>Prénom</label>
+        <input type="text" id="reg-prenom" placeholder="Votre prénom" autocomplete="given-name"/>
+      </div>
+      <div class="champ">
+        <label>E-mail</label>
+        <input type="email" id="reg-email" placeholder="votre@email.com" autocomplete="email"/>
+      </div>
+      <div class="champ">
+        <label>Mot de passe</label>
+        <input type="password" id="reg-mdp" placeholder="Min. 6 caractères" autocomplete="new-password"/>
+      </div>
+      <button class="btn-principal" onclick="handleInscription()">→ Créer mon compte</button>
+    </div>
+
+    <div class="divider"></div>
+  </div>
+
+  <script src="auth.js"></script>
+  <script>
+    // Si déjà connecté → on redirige directement
+    if (getSession()) {
+      window.location.href = 'index.html';
+    }
+
+    function afficherOnglet(tab) {
+      document.getElementById('form-connexion').classList.toggle('visible', tab === 'connexion');
+      document.getElementById('form-inscription').classList.toggle('visible', tab === 'inscription');
+      document.getElementById('btn-connexion').classList.toggle('actif', tab === 'connexion');
+      document.getElementById('btn-inscription').classList.toggle('actif', tab === 'inscription');
+    }
+
+    function afficherErreur(id, msg) {
+      const el = document.getElementById(id);
+      el.textContent = msg;
+      el.classList.add('erreur');
+    }
+
+    function cacherErreur(id) {
+      const el = document.getElementById(id);
+      el.textContent = '';
+      el.classList.remove('erreur');
+    }
+
+    function handleConnexion() {
+      cacherErreur('err-connexion');
+      const email = document.getElementById('login-email').value.trim();
+      const mdp   = document.getElementById('login-mdp').value;
+      if (!email || !mdp) { afficherErreur('err-connexion', 'Veuillez remplir tous les champs.'); return; }
+      const res = login(email, mdp);
+      if (res.ok) {
+        window.location.href = 'index.html';
+      } else {
+        afficherErreur('err-connexion', res.message);
+      }
+    }
+
+    function handleInscription() {
+      cacherErreur('err-inscription');
+      const prenom = document.getElementById('reg-prenom').value.trim();
+      const email  = document.getElementById('reg-email').value.trim();
+      const mdp    = document.getElementById('reg-mdp').value;
+      if (!prenom || !email || !mdp) { afficherErreur('err-inscription', 'Veuillez remplir tous les champs.'); return; }
+      if (mdp.length < 6) { afficherErreur('err-inscription', 'Le mot de passe doit contenir au moins 6 caractères.'); return; }
+      const res = register(prenom, email, mdp);
+      if (res.ok) {
+        window.location.href = 'index.html';
+      } else {
+        afficherErreur('err-inscription', res.message);
+      }
+    }
+
+    // Touche Entrée pour valider
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter') return;
+      if (document.getElementById('form-connexion').classList.contains('visible')) {
+        handleConnexion();
+      } else {
+        handleInscription();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anatomie Interactive — Système Digestif</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css"/>
+  
+</head>
+<body>
+
+  <!-- AUTH : chargé en premier pour rediriger si non connecté -->
+  <script src="auth.js"></script>
+  <script>const _session = requireAuth();</script>
+
+  <!-- Barre utilisateur -->
+  <div class="barre-user" id="barre-user">
+    <div class="user-info">Connecté en tant que <span id="user-prenom"></span></div>
+    <button class="btn-logout" onclick="logout()">⎋ Déconnexion</button>
+  </div>
+
+  <!-- TOOLTIP : la petite bulle qui apparaît au survol d'un pin -->
+  <div id="tooltip"></div>
+
+  <header>
+    <span class="tag">Exploration Médicale · Système Digestif</span>
+    <h1>Anatomie <em>Interactive</em></h1>
+    <p class="sous-titre">Cliquez sur un organe pour explorer son anatomie, ses fonctions et ses pathologies</p>
+    <div class="ligne-header"></div>
+  </header>
+    <!-- ───  clonne gauche   ─── -->
+
+  <div class="grille-principale">
+
+    <!-- ───  le corps  ─── -->
+    <div class="panneau-corps">
+
+      <span class="etiquette-panneau">// Corps humain — Système digestif</span>
+
+      <div class="conteneur-corps" id="conteneur-corps">
+        <img
+          class="photo-corps"
+          src="images/corps.png"
+          alt="Système digestif humain"
+          id="photo-corps"
+        />
+      </div>
+
+      <!-- Boutons de sélection rapide  -->
+      <div class="selection-rapide">
+        <h4>// Sélection rapide des organes</h4>
+        <div class="grille-boutons" id="grille-boutons">
+          
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ─── COLONNE DROITE -->
+    <div class="colonne-info">
+
+      <!-- Message d'accueil -->
+      <div class="message-accueil" id="message-accueil">
+        <div class="icone-accueil">⚕</div>
+        <h3>Explorez le corps humain</h3>
+        <p>
+          Sélectionnez un organe sur le schéma ou utilisez les boutons
+          de sélection rapide pour afficher sa fiche détaillée.
+        </p>
+      </div>
+
+      <!-- Carte de l'organe  -->
+      <div class="carte-organe" id="carte-organe"></div>
+
+    </div>
+    <!-- fin colonne droite -->
+
+  </div>
+
+  <script src="main.js"></script>
+  <script>
+    // Affiche le prénom de l'utilisateur connecté
+    const s = getSession();
+    if (s) document.getElementById('user-prenom').textContent = s.prenom;
+  </script>
+
+</body>
+</html>
